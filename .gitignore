@@ -1,0 +1,12 @@
+/node_modules
+/.idea
+
+# IntelliJ Idea
+.idea/
+*.iml
+*.ipr
+debug.log
+.gradle
+
+# yarn
+.yarn
