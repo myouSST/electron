@@ -6,12 +6,12 @@ let win;
 const icon = nativeImage.createFromPath('asset/app.png').resize({width: 15, height: 15});
 const icon2 = nativeImage.createFromPath('asset/app.png');
 const iconNew = nativeImage.createFromPath('asset/new.png').resize({width: 15, height: 15});
+let count = 1;
 
 const createWindow = () => {
     win = new BrowserWindow({
         width: 800,
         height: 600,
-        icon: icon2,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
         },
@@ -74,12 +74,17 @@ async function createNotification() {
 
         tray.setTitle('UNREAD')
         tray.setImage(iconNew);
+
+        app.setBadgeCount(count++);
+        //app.dock.setIcon();
         notification.show();
     });
 
     ipcMain.handle('clearNotification', (event, data) => {
         tray.setTitle('')
         tray.setImage(icon);
+        count = 0;
+        app.setBadgeCount(0);
     });
 }
 
