@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dworks Electron</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #container {
+            text-align: center;
+        }
+
+        #pushButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        #readButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #26296a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        #result {
+            font-size: 18px;
+            color: #2ecc71;
+        }
+    </style>
+    <script src="./renderer.js"></script>
+</head>
+<body>
+
+<div id="container">
+    <h1>Hello World </h1>
+    <button id="pushButton" onclick="sendPushNotification()">푸시 테스트 버튼</button>
+    <button id="readButton" onclick="readNotification()">읽음 테스트 버튼</button>
+    <p id="result"></p>
+</div>
+
+<script>
+
+</script>
+</body>
+</html>
