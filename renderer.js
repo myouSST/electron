@@ -2,6 +2,7 @@ async function sendPushNotification() {
     const response = await window.electronAPI.noti({
         title: 'qwdqwdd',
         body: 'qwdpqwiojdjqiopd',
+        subtitle: '222222',
         //onClick: handleClick
     });
 

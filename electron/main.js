@@ -17,8 +17,15 @@ const createWindow = () => {
         },
     })
 
+    //app.getPath()
     win.loadFile('index.html')
     //win.openDevTools();
+
+    Menu.setApplicationMenu(null);
+
+    if (process.platform === 'win32') {
+        app.setAppUserModelId(app.name);
+    }
 }
 
 app.whenReady().then(() => {
@@ -63,11 +70,13 @@ function createTray() {
 }
 
 async function createNotification() {
+    let prevNotification; // 알림을 저장할 배열
+
     ipcMain.handle('notification', (event, data) => {
         const notification = new Notification(data);
 
         notification.click = () => {
-            args.onclick();
+            data.onclick();
             // click 이벤트가 발생했을 때 실행할 코드
         };
 
@@ -76,6 +85,12 @@ async function createNotification() {
 
         app.setBadgeCount(count++);
         notification.show();
+
+        if (prevNotification) {
+            prevNotification.close();
+        }
+
+        prevNotification = notification;
     });
 
     ipcMain.handle('clearNotification', (event, data) => {
