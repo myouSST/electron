@@ -16,7 +16,17 @@
         }
 
         #container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            background: url('./public/bg.png') bottom no-repeat;
             text-align: center;
+        }
+
+        #wrap {
+            text-align: center;
+            width: 100%;
         }
 
         #pushButton {
@@ -51,14 +61,12 @@
 <body>
 
 <div id="container">
-    <h1>Hello World </h1>
-    <button id="pushButton" onclick="sendPushNotification()">푸시 테스트 버튼</button>
-    <button id="readButton" onclick="readNotification()">읽음 테스트 버튼</button>
-    <p id="result"></p>
+    <div id="wrap">
+        <h1>Hello World </h1>
+        <button id="pushButton" onclick="sendPushNotification()">푸시 테스트 버튼</button>
+        <button id="readButton" onclick="readNotification()">읽음 테스트 버튼</button>
+        <p id="result"></p>
+    </div>
 </div>
-
-<script>
-
-</script>
 </body>
 </html>

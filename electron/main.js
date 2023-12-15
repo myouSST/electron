@@ -3,9 +3,9 @@ const path = require('node:path')
 
 let tray;
 let win;
-const icon = nativeImage.createFromPath('asset/app.png').resize({width: 15, height: 15});
-const icon2 = nativeImage.createFromPath('asset/app.png');
-const iconNew = nativeImage.createFromPath('asset/new.png').resize({width: 15, height: 15});
+const icon = nativeImage.createFromPath(app.getAppPath() + '/asset/app.png').resize({width: 15, height: 15});
+const icon2 = nativeImage.createFromPath(app.getAppPath() + '/asset/app.png');
+const iconNew = nativeImage.createFromPath(app.getAppPath() + '/asset/new.png').resize({width: 15, height: 15});
 let count = 1;
 
 const createWindow = () => {
@@ -33,7 +33,6 @@ app.whenReady().then(() => {
     })
 
     app.dock.setIcon(icon2);
-
 })
 
 app.on('window-all-closed', () => {
@@ -76,7 +75,6 @@ async function createNotification() {
         tray.setImage(iconNew);
 
         app.setBadgeCount(count++);
-        //app.dock.setIcon();
         notification.show();
     });
 
