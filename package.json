@@ -3,7 +3,7 @@
   "description": "DWorks",
   "version": "1.0.0",
   "main": "electron/main.js",
-  "author": "myou",
+  "author": "Spectra",
   "license": "MIT",
   "scripts": {
     "start": "electron-forge start",

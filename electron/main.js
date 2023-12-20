@@ -36,6 +36,7 @@ const createWindow = () => {
         webPreferences: {
             preload: path.join(__dirname, "preload.js")
         },
+        icon: icon2,
         show: false
     });
     win.openDevTools();
@@ -100,7 +101,7 @@ function createTray() {
     tray.setContextMenu(contextMenu);
 }
 
-function showServerPrompt () {
+function showServerPrompt() {
     prompt({
         title: 'DWORKS workspace',
         label: 'URL:',

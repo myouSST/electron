@@ -7,11 +7,8 @@ module.exports = {
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        authors: 'Spectra',
+        iconUrl: 'https://dworks-workspace.spectra.co.kr/btalk/favicon.ico',
         description: 'Messaging Works Platform',
-        icon: 'electron/icons/app.ico',
-        exe: 'dworks.exe',
-        name: 'dworks',
       },
     },
     {
@@ -21,16 +18,12 @@ module.exports = {
     {
       name: '@electron-forge/maker-dmg',
       config: {
-        icon: 'electron/icons/app.icns'
+        icon: './electron/icons/app.icns',
       }
     },
     {
       name: '@electron-forge/maker-deb',
-      config: {
-        options: {
-          icon: 'electron/icons/app.ico'
-        }
-      },
+      config: {},
     },
     {
       name: '@electron-forge/maker-rpm',
