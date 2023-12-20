@@ -6,7 +6,13 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
+      config: {
+        authors: 'YOU',
+        //iconUrl: 'https://your_site/favicon.ico',
+        icon: 'electron/icons/app.ico',
+        exe: `dworks.exe`,
+        name: 'dworks',
+      },
     },
     {
       name: '@electron-forge/maker-zip',

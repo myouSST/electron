@@ -12,16 +12,21 @@ const path = require("node:path");
 let tray;
 let win;
 const icon = nativeImage
-    .createFromPath(app.getAppPath() + "/electron/icons/asset/app.png")
+    .createFromPath(app.getAppPath() + "/electron/icons/app.png")
     .resize({
         width: 15,
         height: 15
     });
 const icon2 = nativeImage.createFromPath(
-    app.getAppPath() + "/electron/icons/asset/app.png"
+    app.getAppPath() + "/electron/icons/app.png"
 );
+
+const ico = nativeImage.createFromPath(
+    app.getAppPath() + "/electron/icons/app.ico"
+);
+
 const iconNew = nativeImage
-    .createFromPath(app.getAppPath() + "/electron/icons/asset/new.png")
+    .createFromPath(app.getAppPath() + "/electron/icons/new.png")
     .resize({
         width: 15,
         height: 15
@@ -39,6 +44,7 @@ const createWindow = () => {
     //win.loadURL("http://172.16.120.183:3000/btalk");
     win.loadURL("http://172.16.100.155:3000/ctalk");
     win.openDevTools();
+    win.setIcon(ico);
 
     Menu.setApplicationMenu(null);
 
@@ -62,9 +68,7 @@ app.whenReady().then(() => {
 });
 
 app.on("window-all-closed", () => {
-    console.log(111);
     if (process.platform !== "darwin") {
-        console.log(2222);
         app.quit();
     }
 });
