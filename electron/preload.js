@@ -3,14 +3,17 @@ const {contextBridge, ipcRenderer} = require('electron');
 contextBridge.exposeInMainWorld('electronAPI', {
     useElectron: true,
     ipcRenderer: ipcRenderer,
-    noti: arg => {
-        ipcRenderer.invoke('notification', arg);
+    notification: arg => {
+        ipcRenderer.invoke('electron:notification', arg);
     },
-    read: arg => {
-        ipcRenderer.invoke('clearNotification', arg);
+    badge: arg => {
+        ipcRenderer.invoke('electron:badge', arg);
+    },
+    clearBadge: arg => {
+        ipcRenderer.invoke('electron:clearBadge', arg);
     },
     openWindow: arg => {
-        ipcRenderer.invoke('electronAPI:openWindow', arg);
+        ipcRenderer.invoke('electron:openWindow', arg);
     },
 });
 

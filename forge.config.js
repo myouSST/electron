@@ -1,41 +1,40 @@
 module.exports = {
-    packagerConfig: {
-        asar: true,
-        icon: 'asset/icon' // no file extension required
+  packagerConfig: {
+    asar: true,
+  },
+  rebuildConfig: {},
+  makers: [
+    {
+      name: '@electron-forge/maker-squirrel',
+      config: {},
     },
-    rebuildConfig: {},
-    makers: [
-        {
-            name: '@electron-forge/maker-squirrel',
-            config: {},
-        },
-        {
-            name: '@electron-forge/maker-zip',
-            platforms: ['darwin'],
-        },
-        {
-            name: '@electron-forge/maker-dmg',
-            config: {
-                icon: 'asset/icon.icns'
-            }
-        },
-        {
-            name: '@electron-forge/maker-deb',
-            config: {
-                options: {
-                    icon: 'asset/icon'
-                }
-            },
-        },
-        {
-            name: '@electron-forge/maker-rpm',
-            config: {},
-        },
-    ],
-    plugins: [
-        {
-            name: '@electron-forge/plugin-auto-unpack-natives',
-            config: {},
-        },
-    ],
+    {
+      name: '@electron-forge/maker-zip',
+      platforms: ['darwin'],
+    },
+    {
+      name: '@electron-forge/maker-dmg',
+      config: {
+        icon: 'electron/icons/app.icns'
+      }
+    },
+    {
+      name: '@electron-forge/maker-deb',
+      config: {
+        options: {
+          icon: 'electron/icons/app.ico'
+        }
+      },
+    },
+    {
+      name: '@electron-forge/maker-rpm',
+      config: {},
+    },
+  ],
+  plugins: [
+    {
+      name: '@electron-forge/plugin-auto-unpack-natives',
+      config: {},
+    },
+  ],
 };
