@@ -7,10 +7,10 @@ module.exports = {
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        authors: 'YOU',
-        //iconUrl: 'https://your_site/favicon.ico',
+        authors: 'Spectra',
+        description: 'Messaging Works Platform',
         icon: 'electron/icons/app.ico',
-        exe: `dworks.exe`,
+        exe: 'dworks.exe',
         name: 'dworks',
       },
     },

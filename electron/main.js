@@ -17,6 +17,7 @@ const icon = nativeImage
         width: 15,
         height: 15
     });
+
 const icon2 = nativeImage.createFromPath(
     app.getAppPath() + "/electron/icons/app.png"
 );
@@ -24,13 +25,6 @@ const icon2 = nativeImage.createFromPath(
 const ico = nativeImage.createFromPath(
     app.getAppPath() + "/electron/icons/app.ico"
 );
-
-const iconNew = nativeImage
-    .createFromPath(app.getAppPath() + "/electron/icons/new.png")
-    .resize({
-        width: 15,
-        height: 15
-    });
 
 const createWindow = () => {
     win = new BrowserWindow({
@@ -41,7 +35,6 @@ const createWindow = () => {
         }
     });
 
-    //win.loadURL("http://172.16.120.183:3000/btalk");
     win.loadURL("http://172.16.100.155:3000/ctalk");
     win.openDevTools();
     win.setIcon(ico);
@@ -62,9 +55,12 @@ app.whenReady().then(() => {
         if (BrowserWindow.getAllWindows().length === 0) {
             createWindow();
         }
+        app.setBadgeCount(0);
     });
 
-    app.dock.setIcon(icon2);
+    if (process.platform === "darwin") {
+        app.dock.setIcon(icon2);
+    }
 });
 
 app.on("window-all-closed", () => {
@@ -74,7 +70,7 @@ app.on("window-all-closed", () => {
 });
 
 function createTray() {
-    tray = new Tray(icon);
+    tray = new Tray(ico);
 
     const contextMenu = Menu.buildFromTemplate([
         {
@@ -90,7 +86,7 @@ function createTray() {
         }
     ]);
 
-    tray.setToolTip("This is my application");
+    tray.setToolTip("DWORKS");
     tray.setContextMenu(contextMenu);
 }
 
@@ -101,7 +97,7 @@ async function createNotification() {
         const notification = new Notification({
             title: data.title,
             body: data.content,
-            icon: path.join(path.join(__dirname, "./icons/ctalk-app.ico"))
+            icon: icon
         });
 
         notification.click = () => {
@@ -119,16 +115,10 @@ async function createNotification() {
     });
 
     ipcMain.handle("electron:badge", (event, data) => {
-        console.log(1)
-        tray.setTitle("UNREAD");
-        tray.setImage(iconNew);
         app.setBadgeCount(".");
     });
 
     ipcMain.handle("electron:clearBadge", (event, data) => {
-        console.log(2)
-        tray.setTitle("");
-        tray.setImage(icon);
         app.setBadgeCount(0);
     });
 }
