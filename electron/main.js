@@ -7,10 +7,12 @@ const {
     nativeImage,
     Notification
 } = require("electron");
+const prompt = require('electron-prompt');
 const path = require("node:path");
 
 let tray;
 let win;
+let url;
 const icon = nativeImage
     .createFromPath(app.getAppPath() + "/electron/icons/app.png")
     .resize({
@@ -26,16 +28,16 @@ const ico = nativeImage.createFromPath(
     app.getAppPath() + "/electron/icons/app.ico"
 );
 
+
 const createWindow = () => {
     win = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
             preload: path.join(__dirname, "preload.js")
-        }
+        },
+        show: false
     });
-
-    win.loadURL("http://172.16.100.155:3000/ctalk");
     win.openDevTools();
     win.setIcon(ico);
 
@@ -44,6 +46,14 @@ const createWindow = () => {
     if (process.platform === "win32") {
         app.setAppUserModelId(app.name);
     }
+
+    if (url) {
+        win.loadURL(url);
+        win.show();
+        return;
+    }
+
+    showServerPrompt(win);
 };
 
 app.whenReady().then(() => {
@@ -88,6 +98,31 @@ function createTray() {
 
     tray.setToolTip("DWORKS");
     tray.setContextMenu(contextMenu);
+}
+
+function showServerPrompt () {
+    prompt({
+        title: 'DWORKS workspace',
+        label: 'URL:',
+        value: 'http://172.16.100.155:3000/ctalk',
+        inputAttrs: {
+            type: 'url'
+        },
+        type: 'input'
+    })
+        .then((data) => {
+            if (data) {
+                //win.loadURL("http://172.16.100.155:3000/ctalk");
+                url = data;
+                win.loadURL(data);
+                win.show();
+            }
+
+            if (!data) {
+                app.quit();
+            }
+        })
+        .catch(console.error);
 }
 
 async function createNotification() {
