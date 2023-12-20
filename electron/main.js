@@ -97,7 +97,7 @@ async function createNotification() {
         const notification = new Notification({
             title: data.title,
             body: data.content,
-            icon: path.join(path.join(__dirname, "../icons/ctalk-app.ico"))
+            icon: path.join(path.join(__dirname, "./icons/ctalk-app.ico"))
         });
 
         notification.click = () => {
