@@ -129,14 +129,14 @@ app.whenReady().then(() => {
     }
 });
 
-function createNotification() {
+async function createNotification() {
     let prevNotification; // 알림을 저장할 배열
 
     ipcMain.handle("electron:notification", (event, data) => {
         const notification = new Notification({
             title: data.title,
             body: data.content,
-            icon: icon
+            icon: icon2
         });
 
         notification.click = () => {
