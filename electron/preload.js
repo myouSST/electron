@@ -15,4 +15,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     openWindow: arg => {
         ipcRenderer.invoke('electron:openWindow', arg);
     },
+    path: arg => {
+        return ipcRenderer.invoke('electron:path', arg);
+    },
 });

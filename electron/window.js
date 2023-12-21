@@ -2,10 +2,10 @@ const {
     app,
     BrowserWindow,
     Menu,
-    nativeImage,
+    nativeImage, ipcMain,
 } = require("electron");
 const prompt = require('electron-prompt');
-const path = require("node:path");
+const fs = require("node:fs");
 
 const ico = nativeImage.createFromPath(
     app.getAppPath() + "/electron/icons/app.ico"
@@ -42,13 +42,21 @@ module.exports = {
             })
             .catch(console.error);
     },
-
+    readConfig: function () {
+        console.log(process.execPath);
+        console.log(app.getPath("appData"));
+        console.log(app.getAppPath());
+        console.log(2);
+        //const data = fs.readFile("./my-file.txt", "utf-8");
+    },
     createWindow: function () {
+        this.readConfig();
+
         const win = new BrowserWindow({
             width: 1366,
             height: 768,
             webPreferences: {
-                preload: path.join(__dirname, "preload.js")
+                preload: app.getAppPath() + "/electron/preload.js"
             },
             icon: icon2,
             show: false
@@ -62,8 +70,22 @@ module.exports = {
             app.setAppUserModelId(app.name);
         }
 
+        ipcMain.handle("electron:path", (event, data) => {
+            const pathString = {
+                execPath: process.execPath,
+                appData: app.getPath("appData"),
+                getAppPath: app.getAppPath()
+            }
+
+            return {...pathString}
+        });
+        win.loadFile('index.html')
+        win.show();
+        return;
+
         if (url) {
-            win.loadURL(url);
+            //win.loadURL(url);
+            win.loadFile('index.html')
             win.show();
             return;
         }

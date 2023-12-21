@@ -11,8 +11,8 @@ module.exports = {
             return false
         }
 
-        const ChildProcess = require('child_process')
-        const path = require('path')
+        const ChildProcess = require('node:child_process')
+        const path = require('node:path')
 
         const appFolder = path.resolve(process.execPath, '..')
         const rootAtomFolder = path.resolve(appFolder, '..')
