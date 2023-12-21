@@ -1,7 +1,7 @@
 module.exports = {
     packagerConfig: {
         asar: true,
-        icon: './electron/icons'
+        icon: './electron/icons/app.ico'
     },
     rebuildConfig: {},
     makers: [
@@ -11,6 +11,7 @@ module.exports = {
                 iconUrl: 'https://dworks-workspace.spectra.co.kr/btalk/favicon.ico',
                 description: 'Messaging Works Platform',
                 setupIcon: './electron/icons/app.ico',
+                icon: './electron/icons/app.ico'
             },
         },
         {
