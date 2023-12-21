@@ -40,6 +40,11 @@ app.whenReady().then(() => {
         app.setBadgeCount(0);
     });
 
+    win.on('close', function(event) {
+        event.preventDefault();
+        win.hide();
+    });
+
     app.on("window-all-closed", () => {
         if (process.platform !== "darwin") {
             //app.quit();

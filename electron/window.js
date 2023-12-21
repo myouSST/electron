@@ -45,8 +45,8 @@ module.exports = {
 
     createWindow: function () {
         const win = new BrowserWindow({
-            width: 800,
-            height: 600,
+            width: 1366,
+            height: 768,
             webPreferences: {
                 preload: path.join(__dirname, "preload.js")
             },
