@@ -9,17 +9,10 @@ const {
 } = require("electron");
 const prompt = require('electron-prompt');
 const path = require("node:path");
-const ChildProcess = require("child_process");
 
 let tray;
 let win;
 let url;
-const icon = nativeImage
-    .createFromPath(app.getAppPath() + "/electron/icons/app.png")
-    .resize({
-        width: 15,
-        height: 15
-    });
 
 const icon2 = nativeImage.createFromPath(
     app.getAppPath() + "/electron/icons/app.png"
@@ -29,7 +22,7 @@ const ico = nativeImage.createFromPath(
     app.getAppPath() + "/electron/icons/app.ico"
 );
 
-if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
+if (require('electron-squirrel-startup')) {
     app.quit();
 }
 
@@ -65,32 +58,17 @@ function handleSquirrelEvent() {
     switch (squirrelEvent) {
         case '--squirrel-install':
         case '--squirrel-updated':
-            // Optionally do things such as:
-            // - Add your .exe to the PATH
-            // - Write to the registry for things like file associations and
-            //   explorer context menus
-
-            // Install desktop and start menu shortcuts
             spawnUpdate(['--createShortcut', exeName]);
 
             setTimeout(app.quit, 1000);
             return true;
-
         case '--squirrel-uninstall':
-            // Undo anything you did in the --squirrel-install and
-            // --squirrel-updated handlers
-
-            // Remove desktop and start menu shortcuts
             spawnUpdate(['--removeShortcut', exeName]);
 
             setTimeout(app.quit, 1000);
             return true;
 
         case '--squirrel-obsolete':
-            // This is called on the outgoing version of your app before
-            // we update to the new version - it's the opposite of
-            // --squirrel-updated
-
             app.quit();
             return true;
     }
@@ -125,12 +103,9 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
-
-    // this should be placed at top of main.js to handle setup events quickly
-    if (handleSquirrelEvent()) {
-        // squirrel event handled and app will exit in 1000ms, so don't do anything else
+    /*if (handleSquirrelEvent()) {
         return;
-    }
+    }*/
 
     createWindow();
     createTray();
@@ -143,16 +118,49 @@ app.whenReady().then(() => {
         app.setBadgeCount(0);
     });
 
+    app.on("window-all-closed", () => {
+        if (process.platform !== "darwin") {
+            app.quit();
+        }
+    });
+
     if (process.platform === "darwin") {
         app.dock.setIcon(icon2);
     }
 });
 
-app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") {
-        app.quit();
-    }
-});
+function createNotification() {
+    let prevNotification; // 알림을 저장할 배열
+
+    ipcMain.handle("electron:notification", (event, data) => {
+        const notification = new Notification({
+            title: data.title,
+            body: data.content,
+            icon: icon
+        });
+
+        notification.click = () => {
+            data.onclick();
+            // click 이벤트가 발생했을 때 실행할 코드
+        };
+
+        notification.show();
+
+        if (prevNotification) {
+            prevNotification.close();
+        }
+
+        prevNotification = notification;
+    });
+
+    ipcMain.handle("electron:badge", (event, data) => {
+        app.setBadgeCount(".");
+    });
+
+    ipcMain.handle("electron:clearBadge", (event, data) => {
+        app.setBadgeCount(0);
+    });
+}
 
 function createTray() {
     tray = new Tray(ico);
@@ -187,7 +195,6 @@ function showServerPrompt() {
     })
         .then((data) => {
             if (data) {
-                //win.loadURL("http://172.16.100.155:3000/ctalk");
                 url = data;
                 win.loadURL(data);
                 win.show();
@@ -200,38 +207,6 @@ function showServerPrompt() {
         .catch(console.error);
 }
 
-async function createNotification() {
-    let prevNotification; // 알림을 저장할 배열
-
-    ipcMain.handle("electron:notification", (event, data) => {
-        const notification = new Notification({
-            title: data.title,
-            body: data.content,
-            icon: icon
-        });
-
-        notification.click = () => {
-            data.onclick();
-            // click 이벤트가 발생했을 때 실행할 코드
-        };
-
-        notification.show();
-
-        if (prevNotification) {
-            prevNotification.close();
-        }
-
-        prevNotification = notification;
-    });
-
-    ipcMain.handle("electron:badge", (event, data) => {
-        app.setBadgeCount(".");
-    });
-
-    ipcMain.handle("electron:clearBadge", (event, data) => {
-        app.setBadgeCount(0);
-    });
-}
 
 async function handleCloseClickTray() {
     //await localStorage.removeItem('ADMIN_authInfo');
