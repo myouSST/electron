@@ -75,7 +75,6 @@ function createTray() {
             label: "디웍스 열기",
             click: handleShowClickTray
         },
-
         {
             label: "v" + app.getVersion()
         },
