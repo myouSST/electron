@@ -11,13 +11,21 @@ const notification = require('./notification');
 let tray;
 let win;
 
+const icon = nativeImage
+    .createFromPath(app.getAppPath() + "/electron/icons/app.png")
+    .resize({
+        width: 15,
+        height: 15
+    });
+
 const icon2 = nativeImage.createFromPath(
     app.getAppPath() + "/electron/icons/app.png"
 );
 
-const ico = nativeImage.createFromPath(
-    app.getAppPath() + "/electron/icons/app.ico"
-);
+const ico = process.platform === "darwin"
+    ? icon
+    : nativeImage.createFromPath(app.getAppPath() + "/electron/icons/app.ico")
+
 
 if (require('electron-squirrel-startup')) {
     app.quit();
@@ -35,19 +43,21 @@ app.whenReady().then(() => {
 
     app.on("activate", () => {
         if (BrowserWindow.getAllWindows().length === 0) {
-            win = windowMaker.createWindow()
+            win = windowMaker.createWindow();
+        } else {
+            win.show();
         }
         app.setBadgeCount(0);
     });
 
-    win.on('close', function(event) {
+    win.on('close', function (event) {
         event.preventDefault();
         win.hide();
     });
 
     app.on("window-all-closed", () => {
         if (process.platform !== "darwin") {
-            //app.quit();
+            app.quit();
         }
     });
 
@@ -58,18 +68,20 @@ app.whenReady().then(() => {
 
 function createTray() {
     tray = new Tray(ico);
+    tray.on('click', handleShowClickTray);
 
     const contextMenu = Menu.buildFromTemplate([
         {
             label: "디웍스 열기",
             click: handleShowClickTray
         },
+
+        {
+            label: "v" + app.getVersion()
+        },
         {
             label: "종료",
             click: handleCloseClickTray
-        },
-        {
-            label: "v" + app.getVersion()
         }
     ]);
 
