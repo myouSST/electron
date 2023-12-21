@@ -14,16 +14,6 @@ module.exports = {
             },
         },
         {
-            name: '@electron-forge/maker-wix',
-            config: {
-                language: 1033,
-                manufacturer: 'My Awesome Company',
-                ui: {
-                    chooseDirectory: true
-                }
-            }
-        },
-        {
             name: '@electron-forge/maker-zip',
             platforms: ['darwin'],
         },
