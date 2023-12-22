@@ -9,6 +9,7 @@ module.exports = {
             name: '@electron-forge/maker-squirrel',
             config: {
                 iconUrl: 'https://dworks-workspace.spectra.co.kr/btalk/favicon.ico',
+                //loadingGif: ''
                 description: 'Messaging Works Platform',
                 setupIcon: './electron/icons/app.ico',
                 icon: './electron/icons/app.ico'
