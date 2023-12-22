@@ -7,6 +7,7 @@ const {
 } = require("electron");
 const windowMaker = require('./window');
 const notification = require('./notification');
+const configPrompt = require('./configPrompt');
 
 let tray;
 let win;
@@ -68,12 +69,16 @@ app.whenReady().then(() => {
 
 function createTray() {
     tray = new Tray(ico);
-    tray.on('click', handleShowClickTray);
+    tray.on('double-click', handleShowClickTray);
 
     const contextMenu = Menu.buildFromTemplate([
         {
             label: "디웍스 열기",
             click: handleShowClickTray
+        },
+        {
+            label: "환경설정",
+            click: handleSettingClickTray
         },
         {
             label: "v" + app.getVersion()
@@ -101,4 +106,18 @@ async function handleShowClickTray() {
     } else {
         win.show();
     }
+}
+
+async function handleSettingClickTray() {
+    const config = windowMaker.getConfig();
+
+    configPrompt.showServerPrompt(config.server)
+        .then((data) => {
+            if (data) {
+                windowMaker.setConfig({...config, server: data});
+                app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
+                app.exit(0)
+            }
+        })
+        .catch(console.error);
 }
