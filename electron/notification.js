@@ -10,15 +10,13 @@ module.exports = {
 
         ipcMain.handle("electron:notification", (event, data) => {
             const notification = new Notification({
-                title: data.title,
-                body: data.content,
+                ...data,
                 icon: icon2
             });
 
-            notification.click = () => {
-                data.onclick();
-                // click 이벤트가 발생했을 때 실행할 코드
-            };
+            notification.on("click", (event) => {
+                win.webContents.send("bridge:notificationClick", data);
+            });
 
             notification.show();
 

@@ -4,6 +4,7 @@ const {
     Menu,
     Tray,
     nativeImage,
+    ipcRenderer
 } = require("electron");
 const windowMaker = require('./window');
 const notification = require('./notification');
@@ -39,8 +40,10 @@ if (setupEvents.handleSquirrelEvent()) {
 
 app.whenReady().then(() => {
     win = windowMaker.createWindow()
-    notification.createNotification();
+    notification.createNotification(win);
     createTray();
+
+    console.log(ipcRenderer)
 
     app.on("activate", () => {
         if (BrowserWindow.getAllWindows().length === 0) {
@@ -115,7 +118,7 @@ async function handleSettingClickTray() {
         .then((data) => {
             if (data) {
                 windowMaker.setConfig({...config, server: data});
-                app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
+                app.relaunch({args: process.argv.slice(1).concat(['--relaunch'])})
                 app.exit(0)
             }
         })
